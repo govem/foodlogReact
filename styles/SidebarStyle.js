@@ -1,8 +1,9 @@
 import { StyleSheet } from 'react-native';
+import colors from './Colors';
 
 const styles = StyleSheet.create({
   sidebar: {
-    backgroundColor: 'rgba(0,0,0,0.9)',
+    backgroundColor: colors.negroTransparente,
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
@@ -11,7 +12,7 @@ const styles = StyleSheet.create({
   },
   foto: {},
   nombre: {
-    color: '#fff',
+    color: colors.blanco,
     fontSize: 16,
     fontFamily: 'PTSansBold'
   },
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   mensaje: {
-    color: '#fff',
+    color: colors.blanco,
     fontSize: 12,
     marginBottom: 8
   }

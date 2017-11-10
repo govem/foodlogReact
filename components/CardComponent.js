@@ -1,14 +1,14 @@
 import React from 'react';
 import styles from '../styles/CardStyle.js';
-import { View, Image, FlatList, TouchableHighlight } from 'react-native';
+import { View, Image, FlatList, TouchableOpacity } from 'react-native';
 import { Text, Card, CardItem, Body } from 'native-base';
+
+import appstore from '../stores/Appstore.js';
 
 class CardComponent extends React.Component {
   constructor(props) {
     super(props);
   }
-
-  _keyExtractor = item => item.order;
 
   getStars = estrellas => {
     let buffer = [];
@@ -47,7 +47,8 @@ class CardComponent extends React.Component {
   };
 
   pressCard = () => {
-    console.log('navegando');
+    console.log(JSON.stringify(this.props.item));
+    appstore.placesStore.selectedPlace = this.props.item;
     this.props.navigator.navigate('Detalle');
   };
 
@@ -68,7 +69,7 @@ class CardComponent extends React.Component {
 
     return (
       <View>
-        <TouchableHighlight onPress={this.pressCard}>
+        <TouchableOpacity onPress={this.pressCard}>
           <Card style={styles.cell}>
             <CardItem style={styles.cellCardItem}>
               <Body>
@@ -84,12 +85,12 @@ class CardComponent extends React.Component {
               </Body>
             </CardItem>
           </Card>
-        </TouchableHighlight>
+        </TouchableOpacity>
         {this.props.visited == true && (
           <FlatList
             style={hasMoreData > 0 ? styles.visitedListMasDatos : styles.visitedList}
             data={filteredVisits}
-            keyExtractor={this._keyExtractor}
+            keyExtractor={item => item.order}
             renderItem={({ item }) => (
               <View>
                 <View key={item.order} style={this.getFila(this.props.item.visitas, item, hasMoreData)}>

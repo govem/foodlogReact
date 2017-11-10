@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import colors from './Colors';
 
 const styles = StyleSheet.create({
   headerTitle: {
@@ -10,7 +11,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   extendedViewHeader: {
-    backgroundColor: '#FDA63A'
+    backgroundColor: colors.naranjo
   },
   segmentView: {
     flexDirection: 'row',
@@ -27,25 +28,25 @@ const styles = StyleSheet.create({
   },
   segmentTab: {
     height: 40,
-    backgroundColor: 'rgba(255,255,255,0.3)',
+    backgroundColor: colors.blancoTab,
     borderWidth: 0
   },
   segmentTabText: {
-    color: '#fff',
+    color: colors.blanco,
     fontWeight: 'bold'
   },
   segmentActive: {
-    backgroundColor: '#fff'
+    backgroundColor: colors.blanco
   },
   segmentActiveText: {
-    color: '#FDA73B',
+    color: colors.naranjo,
     fontWeight: 'bold'
   },
   searchIcon: {
     width: 30,
     marginLeft: 10,
     marginRight: 10,
-    color: '#fff'
+    color: colors.blanco
   },
   searchPanel: {
     flexDirection: 'row',
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
   },
   itemInput: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: colors.blanco,
     borderWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
   iconSearch: {
     marginRight: 4,
     paddingLeft: 10,
-    color: '#888'
+    color: colors.blanco
   },
   cancelButton: {
     paddingTop: 0,
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
   },
   cancelSearchText: {
     paddingLeft: 0,
-    color: '#fff',
+    color: colors.blanco,
     paddingTop: 0,
     paddingBottom: 0
   }

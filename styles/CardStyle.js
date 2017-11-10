@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import colors from './Colors';
 
 const styles = StyleSheet.create({
   cell: {
@@ -25,16 +26,16 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   cellTitle: {
-    color: '#444',
+    color: colors.casiNegro,
     fontSize: 16,
     fontFamily: 'PTSansBold'
   },
   cellText: {
-    color: '#9B9B9B',
+    color: colors.grisClaro,
     fontSize: 14
   },
   cellTextHL: {
-    color: '#4990E2',
+    color: colors.azulClaro,
     fontSize: 14,
     marginTop: 13,
     fontFamily: 'PTSansBold'
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
     paddingLeft: 8,
     paddingRight: 8,
-    backgroundColor: '#fff'
+    backgroundColor: colors.blanco
   },
   filaVisitasGris: {
     flexDirection: 'row',
@@ -63,10 +64,10 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
     paddingLeft: 8,
     paddingRight: 8,
-    backgroundColor: '#f2f2f2'
+    backgroundColor: colors.casiBlanco
   },
   filaMasDatos: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.blanco,
     paddingTop: 4,
     paddingBottom: 4,
     marginLeft: 12,
@@ -79,17 +80,17 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     fontSize: 12,
-    color: '#4990E2'
+    color: colors.azulClaro
   },
   filaFecha: {
     fontSize: 12,
     width: 85,
-    color: '#444'
+    color: colors.casiNegro
   },
   filaTexto: {
     fontSize: 12,
     flex: 1,
-    color: '#444'
+    color: colors.casiNegro
   },
   filaNota: {
     flexDirection: 'row',
