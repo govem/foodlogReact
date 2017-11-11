@@ -28,6 +28,20 @@ class PlaceDetailComponent extends React.Component {
     </View>
   );
 
+  onNuevaVisita = () => {
+    this.props.navigator.navigate('NuevaVisita');
+  };
+
+  onFavorite = () => {};
+
+  onMap = () => {
+    this.props.navigator.navigate('Mapa');
+  };
+
+  onNotes = () => {};
+
+  onShare = () => {};
+
   render() {
     var data = [
       { data: [{ id: 1, name: 'plato', value: 3 }], title: '9 jul 17' },
@@ -60,19 +74,19 @@ class PlaceDetailComponent extends React.Component {
           </View>
         </Image>
         <View style={css.botonera}>
-          <Button transparent style={css.btn}>
+          <Button transparent style={css.btn} onPress={this.onNuevaVisita}>
             <Icon ios="md-add" android="md-add" style={css.btnIcon} />
           </Button>
-          <Button transparent style={css.btn}>
+          <Button transparent style={css.btn} onPress={this.onFavorite}>
             <Icon ios="ios-star" android="md-star" style={css.btnIcon} />
           </Button>
-          <Button transparent style={css.btn}>
+          <Button transparent style={css.btn} onPress={this.onMap}>
             <Icon ios="ios-pin" android="md-pin" style={css.btnIcon} />
           </Button>
-          <Button transparent style={css.btn}>
+          <Button transparent style={css.btn} onPress={this.onNotes}>
             <Icon ios="ios-paper-outline" android="md-paper" style={css.btnIcon} />
           </Button>
-          <Button transparent style={css.btn}>
+          <Button transparent style={css.btn} onPress={this.onShare}>
             <Icon ios="ios-share-outline" android="md-share" style={css.btnIcon} />
           </Button>
         </View>

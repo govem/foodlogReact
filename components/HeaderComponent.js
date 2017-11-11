@@ -51,28 +51,67 @@ class HeaderComponent extends React.Component {
   };
 
   render() {
-    var title = this.props.isDetail ? 'Detalle' : 'FoodLog';
+    var buttonLeft;
+    var buttonRight;
+
+    switch (this.props.headerMode) {
+      case 'menu':
+        buttonLeft = (
+          <Left>
+            <Button transparent onPress={this.onClickHamburguer}>
+              <Icon name="menu" />
+            </Button>
+          </Left>
+        );
+        buttonRight = <Right style={{ flex: 0.5 }} />;
+        break;
+
+      case 'detail':
+        buttonLeft = (
+          <Left>
+            <Button transparent onPress={this.onClickBack}>
+              <Icon name="arrow-back" />
+            </Button>
+          </Left>
+        );
+        buttonRight = <Right style={{ flex: 0.5 }} />;
+        break;
+
+      case 'modalCancel':
+        buttonLeft = (
+          <Left>
+            <Button transparent onPress={this.onClickBack} style={styles.leftRightButton}>
+              <Text style={styles.leftRightText}>Cancelar</Text>
+            </Button>
+          </Left>
+        );
+        buttonRight = <Right style={{ flex: 0.5 }} />;
+        break;
+
+      case 'modalOk':
+        buttonLeft = <Left style={{ flex: 0.5 }} />;
+        buttonRight = (
+          <Right style={{ flex: 0.5 }}>
+            <Button transparent onPress={this.onClickBack} style={styles.leftRightButton}>
+              <Text style={styles.leftRightText}>OK</Text>
+            </Button>
+          </Right>
+        );
+        break;
+      default:
+        break;
+    }
 
     return (
       <View>
         <Header noShadow>
-          <Left>
-            {!this.props.isDetail ? (
-              <Button transparent onPress={this.onClickHamburguer}>
-                <Icon name="menu" />
-              </Button>
-            ) : (
-              <Button transparent onPress={this.onClickBack}>
-                <Icon name="arrow-back" />
-              </Button>
-            )}
-          </Left>
+          {buttonLeft}
           <Body style={styles.headerBody}>
-            <Title style={styles.headerTitle}>{title}</Title>
+            <Title style={styles.headerTitle}>{this.props.title}</Title>
           </Body>
-          <Right style={{ flex: 0.5 }} />
+          {buttonRight}
         </Header>
-        {!this.props.isDetail && (
+        {this.props.headerMode === 'menu' && (
           <View style={styles.extendedViewHeader}>
             {!this.state.searching ? (
               <View style={styles.segmentView}>
@@ -102,7 +141,7 @@ class HeaderComponent extends React.Component {
                     onSubmitEditing={this.onSubmitSearch}
                   />
                 </Item>
-                <Button transparent onPress={this.onCancelSearch} style={styles.cancelButton}>
+                <Button transparent onPress={this.onCancelSearch} style={styles.cancelSearchButton}>
                   <Text style={styles.cancelSearchText}>Cancelar</Text>
                 </Button>
               </View>

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import colors from './Colors';
 
 const styles = StyleSheet.create({
   placesList: {
@@ -10,6 +11,10 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1
+  },
+  fabStyle: {
+    backgroundColor: colors.azulClaro,
+    color: colors.blanco
   }
 });
 

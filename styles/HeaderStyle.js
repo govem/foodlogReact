@@ -78,9 +78,22 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     color: colors.blanco
   },
-  cancelButton: {
+  cancelButtonModal: {
+    paddingLeft: 0,
+    paddingRight: 0
+  },
+  leftRightText: {
+    paddingLeft: 0,
+    paddingRight: 0,
+    fontSize: 14,
+    fontWeight: 'bold'
+  },
+  leftRightButton: {
+    minWidth: 40,
     paddingTop: 0,
-    paddingBottom: 0
+    paddingBottom: 0,
+    paddingLeft: 0,
+    paddingRight: 0
   },
   cancelSearchText: {
     paddingLeft: 0,

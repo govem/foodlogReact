@@ -4,12 +4,14 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { LinearGradient } from 'expo';
 import { FlatList, RefreshControl } from 'react-native';
-import { Content } from 'native-base';
+import { Icon, Content } from 'native-base';
+import FAB from 'react-native-fab';
 
 import appstore from '../stores/Appstore.js';
 
 import CardComponent from './CardComponent';
 import styles from '../styles/MainStyle.js';
+import colors from '../styles/Colors.js';
 
 @observer
 class MainComponent extends React.Component {
@@ -33,9 +35,13 @@ class MainComponent extends React.Component {
     this.setState({ refreshing: false });
   };
 
+  onFab = () => {
+    this.props.navigator.navigate('NuevoLugar');
+  };
+
   render() {
     return (
-      <LinearGradient colors={['#FDA63A', '#FEC750']} style={{ height: '100%' }}>
+      <LinearGradient colors={[colors.naranjo, colors.naranjoGradientEnd]} style={{ height: '100%' }}>
         <Content>
           <FlatList
             style={styles.placesList}
@@ -44,6 +50,7 @@ class MainComponent extends React.Component {
             keyExtractor={this._keyExtractor}
             renderItem={appstore.selectedTabIndex == 0 ? this._cardRender : this._cardVisitedRender}
           />
+          <FAB buttonColor={colors.azulClaro} iconTextColor={colors.blanco} onClickAction={this.onFab} visible={true} iconTextComponent={<Icon name="add" />} />
         </Content>
       </LinearGradient>
     );
