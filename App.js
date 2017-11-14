@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import { AppLoading, Font } from 'expo';
-import { StyleProvider, Drawer } from 'native-base';
+import { StyleProvider, Drawer, Root } from 'native-base';
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
 import { observer } from 'mobx-react';
+import { reaction } from 'mobx';
 
 import LoginComponent from './components/LoginComponent';
 import SidebarComponent from './components/SidebarComponent';
@@ -32,9 +32,16 @@ export default class App extends React.Component {
   closeDrawer = () => {
     this.drawer._root.close();
   };
-  openDrawer = () => {
-    this.drawer._root.open();
-  };
+
+  abreDrawer = reaction(
+    () => appstore.drawerOpened,
+    drawerOpened => {
+      if (drawerOpened == true) {
+        this.drawer._root.open();
+        appstore.toggleDrawer();
+      }
+    }
+  );
 
   render() {
     if (!this.state.isReady) {
@@ -42,21 +49,23 @@ export default class App extends React.Component {
     }
 
     return (
-      <StyleProvider style={getTheme(material)}>
-        {appstore.loggedUser == null ? (
-          <LoginComponent />
-        ) : (
-          <Drawer
-            ref={ref => {
-              this.drawer = ref;
-            }}
-            content={<SidebarComponent />}
-            onClose={() => this.closeDrawer()}
-          >
-            <Navigator />
-          </Drawer>
-        )}
-      </StyleProvider>
+      <Root>
+        <StyleProvider style={getTheme(material)}>
+          {appstore.loggedUser == null ? (
+            <LoginComponent />
+          ) : (
+            <Drawer
+              ref={ref => {
+                this.drawer = ref;
+              }}
+              content={<SidebarComponent />}
+              onClose={() => this.closeDrawer()}
+            >
+              <Navigator />
+            </Drawer>
+          )}
+        </StyleProvider>
+      </Root>
     );
   }
 }

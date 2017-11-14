@@ -20,7 +20,7 @@ class HeaderComponent extends React.Component {
   }
 
   onClickHamburguer = () => {
-    this.props.openDrawer();
+    appstore.toggleDrawer();
   };
 
   onClickTab = index => {

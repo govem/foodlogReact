@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+
   fabStyle: {
     backgroundColor: colors.azulClaro,
     color: colors.blanco

@@ -5,16 +5,16 @@ import { View } from 'react-native';
 import HeaderComponent from './HeaderComponent';
 import MainComponent from './MainComponent';
 import PlaceDetailComponent from './PlaceDetailComponent';
-import NuevaVisitaComponent from './NuevaVisitaComponent';
+import NewVisitComponent from './NewVisitComponent';
 import MapComponent from './MapComponent';
-import NuevoLugarComponent from './NuevoLugarComponent';
+import NewPlaceComponent from './NewPlaceComponent';
 import NotasComponent from './NotasComponent';
 
 import styles from '../styles/MainStyle';
 
 const ListScreen = ({ navigation }) => (
   <View style={styles.container}>
-    <HeaderComponent title="FoodLog" openDrawer={this.openDrawer} headerMode="menu" />
+    <HeaderComponent title="FoodLog" headerMode="menu" />
     <MainComponent navigator={navigation} />
   </View>
 );
@@ -29,7 +29,7 @@ const DetailScreen = ({ navigation }) => (
 const NuevaVisitaScreen = ({ navigation }) => (
   <View style={styles.container}>
     <HeaderComponent title="Nueva Visita" navigator={navigation} headerMode="modalCancel" />
-    <NuevaVisitaComponent />
+    <NewVisitComponent />
   </View>
 );
 
@@ -43,7 +43,7 @@ const MapScreen = ({ navigation }) => (
 const NuevoLugarScreen = ({ navigation }) => (
   <View style={styles.container}>
     <HeaderComponent title="Nuevo Lugar" navigator={navigation} headerMode="modalCancel" />
-    <NuevoLugarComponent />
+    <NewPlaceComponent />
   </View>
 );
 

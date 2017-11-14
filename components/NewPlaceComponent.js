@@ -5,7 +5,7 @@ import { View, FlatList } from 'react-native';
 import { Input, Icon, Button, Card, CardItem, Body } from 'native-base';
 import ResultSearchComponent from './ResultSearchComponent';
 
-import css from '../styles/NuevoLugarStyle.js';
+import css from '../styles/NewPlaceStyle.js';
 import appstore from '../stores/Appstore.js';
 
 @observer

@@ -83,9 +83,9 @@ const styles = StyleSheet.create({
     paddingRight: 0
   },
   leftRightText: {
-    paddingLeft: 0,
-    paddingRight: 0,
-    fontSize: 14,
+    paddingLeft: 5,
+    paddingRight: 5,
+    fontSize: 16,
     fontWeight: 'bold'
   },
   leftRightButton: {

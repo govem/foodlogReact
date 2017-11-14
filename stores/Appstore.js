@@ -7,6 +7,7 @@ class Appstore {
   @observable loggedUser = null;
   @observable selectedTabIndex = 0;
   @observable items = [];
+  @observable drawerOpened = false;
 
   INDEX_POR_VISITAR = 0;
   INDEX_VISITADOS = 1;
@@ -123,6 +124,11 @@ class Appstore {
     this.loginStore = new LoginStore(this);
     this.placesStore = new PlacesStore(this);
     this.items = this.itemsPorVisitar;
+  }
+
+  @action
+  toggleDrawer() {
+    this.drawerOpened = !this.drawerOpened;
   }
 
   @action
