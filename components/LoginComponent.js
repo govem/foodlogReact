@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { Facebook, LinearGradient } from 'expo';
+import { LinearGradient } from 'expo';
 import { observer } from 'mobx-react';
 import { StyleSheet, Image, View, ActivityIndicator } from 'react-native';
 import { Container, Grid, Row, Button, Icon, Text } from 'native-base';
@@ -10,8 +10,6 @@ import appstore from '../stores/Appstore';
 
 @observer
 class LoginComponent extends React.Component {
-  FACEBOOK_APP_ID = '1326948427431878';
-
   constructor(props) {
     super(props);
   }
@@ -20,15 +18,8 @@ class LoginComponent extends React.Component {
     appstore.loginStore.checkLoginStatus();
   };
 
-  logIn = async () => {
-    const { type, token } = await Facebook.logInWithReadPermissionsAsync(this.FACEBOOK_APP_ID, {
-      permissions: ['public_profile', 'email']
-    });
-    if (type === 'success') {
-      const response = await fetch('https://graph.facebook.com/me?fields=id,first_name,last_name,picture&access_token=' + token);
-      const personData = await response.json();
-      appstore.loginStore.setLoggedUser(personData, token);
-    }
+  logIn = () => {
+    appstore.loginStore.login();
   };
 
   render() {

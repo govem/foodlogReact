@@ -15,7 +15,6 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-22.0.1.tar.gz",
     "react-native-collapsible": "^0.9.0",
     "react-native-fab": "^1.0.6",
-    "react-native-fbsdk": "^0.6.3",
     "react-native-maps": "^0.17.1",
     "react-native-segmented-control-tab": "^3.2.1",
     "react-navigation": "^1.0.0-beta.16"

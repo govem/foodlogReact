@@ -127,6 +127,11 @@ class Appstore {
   }
 
   @action
+  setLoggedUser(value) {
+    this.loggedUser = value;
+  }
+
+  @action
   toggleDrawer() {
     this.drawerOpened = !this.drawerOpened;
   }

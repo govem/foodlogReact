@@ -13,6 +13,10 @@ class SidebarComponent extends React.Component {
     console.log('foto:' + appstore.loggedUser.picture.data.url);
   }
 
+  logout = () => {
+    appstore.loginStore.logout();
+  };
+
   render() {
     return (
       <View style={styles.sidebar}>
@@ -25,7 +29,7 @@ class SidebarComponent extends React.Component {
           <Button transparent>
             <Text>Opcion 2</Text>
           </Button>
-          <Button transparent>
+          <Button transparent onPress={this.logout}>
             <Text>Desconectar Facebook</Text>
           </Button>
         </View>
