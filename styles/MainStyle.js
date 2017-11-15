@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
 
   fabStyle: {
     backgroundColor: colors.azulClaro,
-    color: colors.blanco
+    color: colors.blanco,
+    position: 'absolute'
   },
 
   noData: {

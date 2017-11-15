@@ -10,6 +10,8 @@ class LoginStore {
 
   @observable inLogin = true;
 
+  GRAPHURL = 'https://graph.facebook.com/me?fields=id,first_name,last_name,picture.width(250),friends{first_name,last_name,picture,id,name}&access_token=';
+
   constructor(appstore) {
     this.appstore = appstore;
   }
@@ -20,10 +22,7 @@ class LoginStore {
       permissions: ['public_profile', 'email', 'user_friends']
     });
     if (type === 'success') {
-      const response = await fetch(
-        'https://graph.facebook.com/me?fields=id,first_name,last_name,picture,friends{first_name,last_name,picture,id,name}&access_token=' +
-          token
-      );
+      const response = await fetch(this.GRAPHURL + token);
       const personData = await response.json();
       this.setLoggedUser(personData, token);
     }
@@ -70,9 +69,7 @@ class LoginStore {
       .then(
         action('getTokenFbSuccess', async token => {
           console.log('token encontrado, consultando fb');
-          const response = await fetch(
-            'https://graph.facebook.com/me?fields=id,first_name,last_name,picture&access_token=' + token
-          );
+          const response = await fetch(this.GRAPHURL + token);
           const personData = await response.json();
           if (!personData.error) {
             console.log(personData);

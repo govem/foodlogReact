@@ -50,6 +50,12 @@ class HeaderComponent extends React.Component {
     console.log('buscando: ' + this.state.searchText);
   };
 
+  onCallback = () => {
+    if (this.props.onCallback) {
+      this.props.onCallback();
+    }
+  };
+
   render() {
     var buttonLeft;
     var buttonRight;
@@ -93,6 +99,23 @@ class HeaderComponent extends React.Component {
         buttonRight = (
           <Right style={{ flex: 0.5 }}>
             <Button transparent onPress={this.onClickBack} style={styles.leftRightButton}>
+              <Text style={styles.leftRightText}>OK</Text>
+            </Button>
+          </Right>
+        );
+        break;
+
+      case 'modalCancelOk':
+        buttonLeft = (
+          <Left style={{ flex: 0.5 }}>
+            <Button transparent onPress={this.onClickBack} style={styles.leftRightButton}>
+              <Text style={styles.leftRightText}>Cancel</Text>
+            </Button>
+          </Left>
+        );
+        buttonRight = (
+          <Right style={{ flex: 0.5 }}>
+            <Button transparent onPress={this.onCallback} style={styles.leftRightButton}>
               <Text style={styles.leftRightText}>OK</Text>
             </Button>
           </Right>

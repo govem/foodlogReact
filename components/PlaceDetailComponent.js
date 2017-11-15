@@ -42,7 +42,9 @@ class PlaceDetailComponent extends React.Component {
     this.props.navigator.navigate('Notas');
   };
 
-  onShare = () => {};
+  onShare = () => {
+    this.props.navigator.navigate('Share');
+  };
 
   render() {
     var data = [

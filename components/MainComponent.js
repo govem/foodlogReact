@@ -3,8 +3,8 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { LinearGradient } from 'expo';
-import { FlatList, RefreshControl, Text } from 'react-native';
-import { Icon, Content } from 'native-base';
+import { FlatList, RefreshControl, Text, View } from 'react-native';
+import { Icon } from 'native-base';
 import FAB from 'react-native-fab';
 
 import appstore from '../stores/Appstore.js';
@@ -41,35 +41,38 @@ class MainComponent extends React.Component {
 
   render() {
     return (
-      <LinearGradient colors={[colors.naranjo, colors.naranjoGradientEnd]} style={{ height: '100%' }}>
-        <FlatList
-          style={styles.placesList}
-          data={appstore.items}
-          ListEmptyComponent={
-            <Text style={styles.noData}>
-              {appstore.selectedTabIndex == 0
-                ? 'No has guardado ningún lugar para visitar'
-                : 'No has visitado ninguno de tus lugares'}
-            </Text>
-          }
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this.onRefresh.bind(this)}
-              title="Tire para recargar"
-            />
-          }
-          keyExtractor={this._keyExtractor}
-          renderItem={appstore.selectedTabIndex == 0 ? this._cardRender : this._cardVisitedRender}
-        />
+      <View style={{ flex: 1 }}>
+        <LinearGradient colors={[colors.naranjo, colors.naranjoGradientEnd]} style={{ height: '100%' }}>
+          <FlatList
+            style={styles.placesList}
+            data={appstore.items}
+            ListEmptyComponent={
+              <Text style={styles.noData}>
+                {appstore.selectedTabIndex == 0
+                  ? 'No has guardado ningún lugar para visitar'
+                  : 'No has visitado ninguno de tus lugares'}
+              </Text>
+            }
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this.onRefresh.bind(this)}
+                title="Tire para recargar"
+              />
+            }
+            keyExtractor={this._keyExtractor}
+            renderItem={appstore.selectedTabIndex == 0 ? this._cardRender : this._cardVisitedRender}
+          />
+        </LinearGradient>
         <FAB
           buttonColor={colors.azulClaro}
           iconTextColor={colors.blanco}
           onClickAction={this.onFab}
           visible={true}
+          style={styles.fabStyle}
           iconTextComponent={<Icon name="add" />}
         />
-      </LinearGradient>
+      </View>
     );
   }
 }

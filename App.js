@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppLoading, Font } from 'expo';
+import { AppLoading, Font, ScreenOrientation } from 'expo';
 import { StyleProvider, Drawer, Root } from 'native-base';
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';

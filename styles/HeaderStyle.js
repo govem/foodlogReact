@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingRight: 5,
     fontSize: 16,
-    fontWeight: 'bold'
+    fontFamily: 'PTSansBold'
   },
   leftRightButton: {
     minWidth: 40,

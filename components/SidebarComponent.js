@@ -10,7 +10,6 @@ import { Text, Button } from 'native-base';
 class SidebarComponent extends React.Component {
   constructor(props) {
     super(props);
-    console.log('foto:' + appstore.loggedUser.picture.data.url);
   }
 
   logout = () => {
@@ -18,9 +17,10 @@ class SidebarComponent extends React.Component {
   };
 
   render() {
+    var photo = appstore.loggedUser.picture.data.url;
     return (
       <View style={styles.sidebar}>
-        <Image style={styles.foto} source={{ uri: appstore.loggedUser.picture.data.url }} />
+        <Image style={styles.foto} source={{ uri: photo }} />
         <Text style={styles.nombre}>{appstore.nombreCompleto}</Text>
         <View style={styles.listaMenu}>
           <Button transparent light>

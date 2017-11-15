@@ -9,12 +9,13 @@ import NewVisitComponent from './NewVisitComponent';
 import MapComponent from './MapComponent';
 import NewPlaceComponent from './NewPlaceComponent';
 import NotasComponent from './NotasComponent';
+import ShareComponent from './ShareComponent';
 
 import styles from '../styles/MainStyle';
 
 const ListScreen = ({ navigation }) => (
   <View style={styles.container}>
-    <HeaderComponent title="FoodLog" headerMode="menu" />
+    <HeaderComponent navigator={navigation} title="FoodLog" headerMode="menu" />
     <MainComponent navigator={navigation} />
   </View>
 );
@@ -49,6 +50,13 @@ const NuevoLugarScreen = ({ navigation }) => (
 
 const NotasScreen = ({ navigation }) => <NotasComponent navigation={navigation} />;
 
+const ShareScreen = ({ navigation }) => (
+  <View style={styles.container}>
+    <HeaderComponent title="Compartir" navigator={navigation} headerMode="modalCancelOk" />
+    <ShareComponent />
+  </View>
+);
+
 const SideNavigator = StackNavigator(
   {
     Listado: {
@@ -79,6 +87,9 @@ const ModalNavigator = StackNavigator(
     },
     Notas: {
       screen: NotasScreen
+    },
+    Share: {
+      screen: ShareScreen
     }
   },
   {

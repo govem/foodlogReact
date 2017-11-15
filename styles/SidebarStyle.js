@@ -10,11 +10,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 40
   },
-  foto: {},
+  foto: {
+    height: 100,
+    width: 100,
+    borderRadius: 50,
+    marginBottom: 10
+  },
   nombre: {
     color: colors.blanco,
     fontSize: 16,
-    fontFamily: 'PTSansBold'
+    fontFamily: 'PTSansBold',
+    marginBottom: 20
   },
   listaMenu: {
     width: '100%'
