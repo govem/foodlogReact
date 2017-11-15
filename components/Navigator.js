@@ -47,12 +47,7 @@ const NuevoLugarScreen = ({ navigation }) => (
   </View>
 );
 
-const NotasScreen = ({ navigation }) => (
-  <View style={styles.container}>
-    <HeaderComponent title="Notas" navigator={navigation} headerMode="modalCancel" />
-    <NotasComponent />
-  </View>
-);
+const NotasScreen = ({ navigation }) => <NotasComponent navigation={navigation} />;
 
 const SideNavigator = StackNavigator(
   {

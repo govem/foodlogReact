@@ -5,6 +5,8 @@ import { View, Text, FlatList, Image, TouchableOpacity, TextInput } from 'react-
 import { LinearGradient } from 'expo';
 import { Card, CardItem, Icon, Button, ActionSheet } from 'native-base';
 import Collapsible from 'react-native-collapsible';
+import CameraComponent from './CameraComponent';
+import HeaderComponent from './HeaderComponent';
 
 import appstore from '../stores/Appstore.js';
 import colors from '../styles/Colors';
@@ -51,7 +53,9 @@ class NotasComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      newNoteOpen: false
+      newNoteOpen: false,
+      cameraOpen: false,
+      photoData: null
     };
   }
 
@@ -68,10 +72,15 @@ class NotasComponent extends React.Component {
         cancelButtonIndex: 2,
         title: 'Agregar foto'
       },
-      buttonIndex => {
-        this.setState({ clicked: this.BUTTONS[buttonIndex] });
-      }
+      this.onPhotoAction
     );
+  };
+
+  onPhotoAction = buttonIndex => {
+    if (buttonIndex == 0) {
+      this.setState({ cameraOpen: true });
+    } else if (buttonIndex == 1) {
+    }
   };
 
   noteComponent = item => (
@@ -91,50 +100,94 @@ class NotasComponent extends React.Component {
     </Card>
   );
 
+  cancelCamera = () => {
+    this.setState({ cameraOpen: false });
+  };
+
+  photoTaken = data => {
+    this.setState({ photoData: data });
+  };
+
+  deletePhoto = () => {
+    this.setState({ showConfirm: !this.state.showConfirm });
+  };
+
+  onConfirmDelete = () => {
+    this.setState({
+      photoData: null,
+      showConfirm: false
+    });
+    //TODO eliminar foto del cache donde esta guardada
+  };
+
   render() {
-    return (
-      <LinearGradient colors={[colors.naranjo, colors.naranjoGradientEnd]} style={css.gradient}>
-        <View style={css.floatingPanel}>
-          <Text style={css.itemTitle}>{appstore.placesStore.selectedPlace.name}</Text>
-          <Text style={css.itemAddress}>{appstore.placesStore.selectedPlace.address}</Text>
-          <Text style={css.itemTime}>{appstore.placesStore.selectedPlace.time}</Text>
-        </View>
-        <View style={css.floatingPanel}>
-          <TouchableOpacity onPress={this.openNewNote}>
-            <View style={css.flexrow}>
-              <Text style={[css.flexFull, css.titleNewNote]}>Nueva nota</Text>
-              <Icon
-                name={this.state.newNoteOpen == false ? 'ios-arrow-back' : 'ios-arrow-down'}
-                style={{ color: colors.grisClaro }}
-              />
-            </View>
-          </TouchableOpacity>
-          <Collapsible collapsed={!this.state.newNoteOpen}>
-            <View>
-              <TextInput multiline={true} style={css.textInput} />
-              <View style={css.divBtns}>
+    if (this.state.cameraOpen == true) {
+      return <CameraComponent cancelCamera={this.cancelCamera} photoTaken={this.photoTaken} />;
+    } else {
+      var collapsibleNewNote = (
+        <Collapsible collapsed={!this.state.newNoteOpen}>
+          <View>
+            <TextInput multiline={true} style={css.textInput} />
+            <View style={css.divBtns}>
+              {this.state.photoData != null ? (
+                <View style={css.divPhotoBtns}>
+                  <TouchableOpacity onPress={this.deletePhoto}>
+                    <Image source={{ uri: this.state.photoData.uri }} style={css.thumbnail} />
+                    <Icon name="close-circle" style={css.btnErasePhoto} />
+                  </TouchableOpacity>
+                  {this.state.showConfirm && (
+                    <Button onPress={this.onConfirmDelete} style={css.btnConfirm}>
+                      <Icon name="trash" style={css.icnBlanco} />
+                    </Button>
+                  )}
+                </View>
+              ) : (
                 <Button onPress={this.onPhoto} iconLeft style={css.btnNewNote}>
                   <Icon name="image" style={css.icnBlanco} />
-                  <Text style={css.textBtnNewNote}>Agregar foto</Text>
                 </Button>
-                <Button onPress={this.onSaveNote} iconLeft style={css.btnNewNote}>
-                  <Icon name="add" style={css.icnBlanco} />
-                  <Text style={css.textBtnNewNote}>Guardar</Text>
-                </Button>
-              </View>
+              )}
+              <Button onPress={this.onSaveNote} iconLeft style={css.btnNewNote}>
+                <Icon name="add" style={css.icnBlanco} />
+                <Text style={css.textBtnNewNote}>Guardar</Text>
+              </Button>
             </View>
-          </Collapsible>
+          </View>
+        </Collapsible>
+      );
+
+      return (
+        <View style={css.container}>
+          <HeaderComponent title="Notas" navigator={this.props.navigation} headerMode="modalCancel" />
+          <LinearGradient colors={[colors.naranjo, colors.naranjoGradientEnd]} style={css.gradient}>
+            <View style={css.floatingPanel}>
+              <Text style={css.itemTitle}>{appstore.placesStore.selectedPlace.name}</Text>
+              <Text style={css.itemAddress}>{appstore.placesStore.selectedPlace.address}</Text>
+              <Text style={css.itemTime}>{appstore.placesStore.selectedPlace.time}</Text>
+            </View>
+            <View style={css.floatingPanel}>
+              <TouchableOpacity onPress={this.openNewNote}>
+                <View style={css.flexrow}>
+                  <Text style={[css.flexFull, css.titleNewNote]}>Nueva nota</Text>
+                  <Icon
+                    name={this.state.newNoteOpen == false ? 'ios-arrow-back' : 'ios-arrow-down'}
+                    style={{ color: colors.grisClaro }}
+                  />
+                </View>
+              </TouchableOpacity>
+              {collapsibleNewNote}
+            </View>
+            <FlatList
+              style={css.listaNotas}
+              data={this.notas}
+              keyExtractor={item => item.id}
+              alwaysBounceVertical={false}
+              ListEmptyComponent={<Text style={css.noData}>No tienes ninguna nota</Text>}
+              renderItem={({ item }) => this.noteComponent(item)}
+            />
+          </LinearGradient>
         </View>
-        <FlatList
-          style={css.listaNotas}
-          data={this.notas}
-          keyExtractor={item => item.id}
-          alwaysBounceVertical={false}
-          ListEmptyComponent={<Text style={css.noData}>No tienes ninguna nota</Text>}
-          renderItem={({ item }) => this.noteComponent(item)}
-        />
-      </LinearGradient>
-    );
+      );
+    }
   }
 }
 

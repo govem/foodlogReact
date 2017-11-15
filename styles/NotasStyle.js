@@ -96,13 +96,16 @@ const css = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
+  divPhotoBtns: {
+    flexDirection: 'row'
+  },
   btnNewNote: {
     marginTop: 10,
     backgroundColor: colors.azulClaro,
-    paddingRight: 20,
     borderRadius: 4
   },
   textBtnNewNote: {
+    paddingRight: 20,
     color: colors.blanco,
     fontWeight: 'bold'
   },
@@ -110,6 +113,31 @@ const css = StyleSheet.create({
     color: colors.blanco,
     marginLeft: 12,
     marginRight: 12
+  },
+  container: {
+    flex: 1
+  },
+  thumbnail: {
+    width: 45,
+    height: 45,
+    marginTop: 10
+  },
+  btnErasePhoto: {
+    fontSize: 24,
+    color: colors.blanco,
+    position: 'absolute',
+    marginTop: 20,
+    marginLeft: 13,
+    backgroundColor: 'transparent'
+  },
+  btnConfirm: {
+    marginTop: 12,
+    backgroundColor: 'red',
+    width: 45,
+    height: 41,
+    justifyContent: 'center',
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0
   }
 });
 

@@ -16,6 +16,12 @@ const styles = StyleSheet.create({
   fabStyle: {
     backgroundColor: colors.azulClaro,
     color: colors.blanco
+  },
+
+  noData: {
+    paddingTop: 20,
+    textAlign: 'center',
+    backgroundColor: 'transparent'
   }
 });
 
