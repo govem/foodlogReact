@@ -41,7 +41,7 @@ const css = StyleSheet.create({
     height: 45
   },
   searchButton: {
-    width: 40,
+    width: 50,
     paddingRight: 0,
     justifyContent: 'center',
     backgroundColor: colors.azulClaro
@@ -56,11 +56,21 @@ const css = StyleSheet.create({
     marginRight: 20,
     marginTop: 0,
     paddingTop: 0,
-    flex: 0,
-    flexGrow: 0,
-    flexShrink: 0,
+    flex: 1,
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4
+  },
+  errorDiv: {
+    margin: 20,
+    backgroundColor: 'transparent'
+  },
+  errorText: {
+    backgroundColor: 'transparent',
+    color: colors.casiNegro,
+    textAlign: 'center'
+  },
+  spinner: {
+    height: 45
   }
 });
 
