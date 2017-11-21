@@ -91,7 +91,6 @@ class NuevoLugarComponent extends React.Component {
   keyExtractor = item => item.id;
 
   renderItem = ({ item, index }) => {
-    console.log(item);
     return <ResultSearchComponent item={item} index={index} />;
   };
 

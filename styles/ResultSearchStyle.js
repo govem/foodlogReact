@@ -36,6 +36,23 @@ const css = StyleSheet.create({
     height: 52,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  imageHolder: {
+    width: 52,
+    height: 52,
+    borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  holderGris: {
+    backgroundColor: colors.casiBlanco
+  },
+  holderBlanco: {
+    backgroundColor: colors.blanco
+  },
+  imageTextHolder: {
+    textAlign: 'center',
+    fontSize: 36
   }
 });
 

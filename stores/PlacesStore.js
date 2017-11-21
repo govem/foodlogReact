@@ -1,6 +1,7 @@
 'use strict';
 
 import { observable, action } from 'mobx';
+import endpoints from '../utils/Endpoints';
 
 class PlacesStore {
   @observable visitedList;
@@ -9,8 +10,6 @@ class PlacesStore {
   @observable searchResults;
   @observable searchError;
   @observable searchErrorMessage;
-
-  SEARCH_FUNCTION = 'https://us-central1-foodlog-39f28.cloudfunctions.net/searchPlace';
 
   constructor(appstore) {
     this.appstore = appstore;
@@ -32,7 +31,7 @@ class PlacesStore {
 
   @action
   searchPlace(keyword, latitude, longitude, callback, failcallback) {
-    fetch(this.SEARCH_FUNCTION + '?search=' + keyword + '&location=' + latitude + ',' + longitude)
+    fetch(endpoints.SEARCH_URL + '?search=' + keyword + '&location=' + latitude + ',' + longitude)
       .then(response => {
         return response.json();
       })
