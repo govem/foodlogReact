@@ -17,7 +17,10 @@ class SidebarComponent extends React.Component {
   };
 
   render() {
-    var photo = appstore.loggedUser.picture.data.url;
+    var photo;
+    if (appstore.loggedUser.picture != null) {
+      photo = appstore.loggedUser.picture.data.url;
+    }
     return (
       <View style={styles.sidebar}>
         <Image style={styles.foto} source={{ uri: photo }} />

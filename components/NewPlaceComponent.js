@@ -88,10 +88,12 @@ class NuevoLugarComponent extends React.Component {
     });
   };
 
-  keyExtractor = item => item.id;
+  keyExtractor = item => {
+    return item.id;
+  };
 
   renderItem = ({ item, index }) => {
-    return <ResultSearchComponent item={item} index={index} />;
+    return <ResultSearchComponent item={item} index={index} navigator={this.props.navigator} />;
   };
 
   render() {

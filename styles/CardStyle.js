@@ -18,7 +18,9 @@ const styles = StyleSheet.create({
     paddingTop: 0
   },
   cellImage: {
-    borderRadius: 4
+    borderRadius: 4,
+    width: 80,
+    height: 80
   },
   cellTextZone: {
     flex: 1,

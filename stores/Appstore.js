@@ -140,9 +140,13 @@ class Appstore {
   changeIndex(index) {
     this.selectedTabIndex = index;
     if (this.selectedTabIndex == this.INDEX_POR_VISITAR) {
-      this.items = this.itemsPorVisitar;
+      if (appstore.placesStore.notVisitedUserPlaces.length == 0) {
+        appstore.placesStore.userPlaces(false);
+      }
     } else {
-      this.items = this.itemsVisitados;
+      if (appstore.placesStore.visitedUserPlaces.length == 0) {
+        appstore.placesStore.userPlaces(true);
+      }
     }
   }
 

@@ -2,6 +2,7 @@
 
 import { observable, action } from 'mobx';
 import { SecureStore, Facebook } from 'expo';
+import endpoints from '../utils/Endpoints';
 
 class LoginStore {
   KEY_FB_ID = 'FoodlogKeyFbIdUser';
@@ -10,7 +11,7 @@ class LoginStore {
 
   @observable inLogin = true;
 
-  GRAPHURL = 'https://graph.facebook.com/me?fields=id,first_name,last_name,picture.width(250),friends{first_name,last_name,picture,id,name}&access_token=';
+  GRAPHURL = 'https://graph.facebook.com/me?fields=id,first_name,last_name,email,picture.width(250),friends{first_name,last_name,picture,id,name}&access_token=';
 
   constructor(appstore) {
     this.appstore = appstore;
@@ -24,7 +25,7 @@ class LoginStore {
     if (type === 'success') {
       const response = await fetch(this.GRAPHURL + token);
       const personData = await response.json();
-      this.setLoggedUser(personData, token);
+      this.callLogin(personData, token);
     }
   }
 
@@ -32,7 +33,7 @@ class LoginStore {
   setLoggedUser(user, token) {
     this.appstore.loggedUser = user;
     console.log('data de fb: ' + JSON.stringify(this.appstore.loggedUser));
-    SecureStore.setItemAsync(this.KEY_FB_ID, user.id)
+    SecureStore.setItemAsync(this.KEY_FB_ID, user._id)
       .then(() => {
         console.log('facebook id guardado');
         SecureStore.setItemAsync(this.TOKEN_FB, token)
@@ -68,21 +69,55 @@ class LoginStore {
     SecureStore.getItemAsync(this.TOKEN_FB)
       .then(
         action('getTokenFbSuccess', async token => {
-          console.log('token encontrado, consultando fb');
-          const response = await fetch(this.GRAPHURL + token);
-          const personData = await response.json();
-          if (!personData.error) {
-            console.log(personData);
-            //TODO ir a la bd con el dato del usuario y cargar el resto de la data
-            this.setLoggedUser(personData, token);
+          if (token != null) {
+            console.log('token encontrado, consultando fb');
+            const response = await fetch(this.GRAPHURL + token);
+            const personData = await response.json();
+            if (!personData.error) {
+              this.callLogin(personData, token);
+            } else {
+              this.inLogin = false;
+              console.log('Error al obtener datos de fb: ' + personData.error.message);
+            }
           } else {
             this.inLogin = false;
-            console.log('Error al obtener datos de fb: ' + personData.error.message);
+            console.log('token no encontrado');
           }
         })
       )
       .catch(err => {
         console.log(err);
+      });
+  }
+
+  @action
+  callLogin(personData, token) {
+    console.log('llamando a login');
+    var person = {
+      fbid: personData.id,
+      name: personData.first_name,
+      lastname: personData.last_name,
+      email: personData.email
+    };
+    fetch(endpoints.LOGIN, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ user: person })
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(
+        action('loginok', response => {
+          console.log('usuario obtenido desde bd:' + JSON.stringify(response));
+          this.setLoggedUser(response, token);
+        })
+      )
+      .catch(err => {
+        console.log('error logueando usuario');
       });
   }
 }

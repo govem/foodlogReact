@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppLoading, Font, ScreenOrientation } from 'expo';
+import { AppLoading, Font } from 'expo';
 import { StyleProvider, Drawer, Root } from 'native-base';
 import getTheme from './native-base-theme/components';
 import material from './native-base-theme/variables/material';
@@ -61,7 +61,11 @@ export default class App extends React.Component {
               content={<SidebarComponent />}
               onClose={() => this.closeDrawer()}
             >
-              <Navigator />
+              <Navigator
+                onNavigationStateChange={(prevState, newState, action) => {
+                  console.log('cambiando navegacion: ' + JSON.stringify(prevState) + ' ' + JSON.stringify(newState));
+                }}
+              />
             </Drawer>
           )}
         </StyleProvider>

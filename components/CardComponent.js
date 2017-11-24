@@ -4,6 +4,7 @@ import { View, Image, FlatList, TouchableOpacity } from 'react-native';
 import { Text, Card, CardItem, Body } from 'native-base';
 
 import appstore from '../stores/Appstore.js';
+import endpoints from '../utils/Endpoints';
 
 class CardComponent extends React.Component {
   constructor(props) {
@@ -66,6 +67,11 @@ class CardComponent extends React.Component {
       hasMoreData = 0;
     }
 
+    var imgUrl;
+    if (this.props.item.photos !== undefined && this.props.item.photos.length > 0) {
+      imgUrl = endpoints.PLACE_PHOTO_URL + '?height=80&reference=' + this.props.item.photos[0].photo_reference;
+    }
+
     return (
       <View>
         <TouchableOpacity onPress={this.pressCard}>
@@ -73,11 +79,14 @@ class CardComponent extends React.Component {
             <CardItem style={styles.cellCardItem}>
               <Body>
                 <View style={{ flexDirection: 'row' }}>
-                  <Image style={styles.cellImage} source={require('../assets/cafe.png')} />
+                  <Image style={styles.cellImage} source={{ uri: imgUrl }} />
                   <View style={styles.cellTextZone}>
-                    <Text style={styles.cellTitle}>{this.props.item.name}</Text>
-                    <Text style={styles.cellText}>{this.props.item.address}</Text>
-                    <Text style={styles.cellText}>{this.props.item.time}</Text>
+                    <Text ellipsizeMode="tail" numberOfLines={1} style={styles.cellTitle}>
+                      {this.props.item.name}
+                    </Text>
+                    <Text ellipsizeMode="tail" numberOfLines={1} style={styles.cellText}>
+                      {this.props.item.vicinity}
+                    </Text>
                     <Text style={styles.cellTextHL}>{this.getVisits()}</Text>
                   </View>
                 </View>

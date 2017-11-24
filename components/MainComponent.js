@@ -22,6 +22,10 @@ class MainComponent extends React.Component {
     };
   }
 
+  componentDidMount = () => {
+    appstore.placesStore.userPlaces(false);
+  };
+
   _cardRender = ({ item }) => <CardComponent item={item} visited={false} navigator={this.props.navigator} />;
 
   _cardVisitedRender = ({ item }) => <CardComponent item={item} visited={true} navigator={this.props.navigator} />;
@@ -45,7 +49,11 @@ class MainComponent extends React.Component {
         <LinearGradient colors={[colors.naranjo, colors.naranjoGradientEnd]} style={{ height: '100%' }}>
           <FlatList
             style={styles.placesList}
-            data={appstore.items}
+            data={
+              appstore.selectedTabIndex == 0
+                ? appstore.placesStore.notVisitedUserPlaces
+                : appstore.placesStore.visitedUserPlaces
+            }
             ListEmptyComponent={
               <Text style={styles.noData}>
                 {appstore.selectedTabIndex == 0

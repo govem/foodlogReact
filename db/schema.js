@@ -21,16 +21,42 @@ schema = {
   },
   places: {
     placeid1: {
-      zomatoid: '1231231',
-      name: 'asdasd',
-      coordx: 'a123123',
-      coordy: '123123',
-      schedule: 'asasd',
-      address: 'asdasd',
-      city: 'asdasd',
-      country: 'asdas',
-      numberofvisits: 1
-    }
+			geometry:{
+				location:{
+					lat:-33.421495,
+					lng:-70.609636
+				}
+			},
+			viewport:{
+				northeast:{
+					lat:-33.4201990697085,
+					lng:-70.6082397197085
+				},
+				southwest:{
+					lat:-33.4228970302915,
+					lng:-70.6109376802915
+				}
+			},
+			icon:"https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+			id:"07a94d731536aad34c743a68de5a6a515f35e029",
+			name:"Niu Sushi",
+			opening_hours:{
+				open_now:true,
+				weekday_text:[]
+			},
+			photos:[
+				{ height:635,
+					html_attributions:["<a href="">Niu Sushi</a>"],
+					photo_reference:"CD0mLa4zg",
+					width:960 }
+			],
+			place_id:"ChIJJb7VnmjPYpYR6_ECCHzE3yo",
+			rating:4.3,
+			reference:"CmRRAAACKBv0yg",
+			scope:"GOOGLE",
+			types:["restaurant","food","point_of_interest","establishment"],
+			vicinity:"Avenida Providencia 2222, Santiago, Santiago"
+		}
   },
   visits: {
     visitid1: {

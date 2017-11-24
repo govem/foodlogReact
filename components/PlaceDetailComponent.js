@@ -77,13 +77,12 @@ class PlaceDetailComponent extends React.Component {
 
     return (
       <View style={css.container}>
-        <Image style={css.imgStyle} source={require('../assets/cafe.png')}>
-          <View style={css.floatingPanel}>
-            <Text style={css.itemTitle}>{titulo}</Text>
-            <Text style={css.itemAddress}>{direccion}</Text>
-            <Text style={css.itemTime}>{horario}</Text>
-          </View>
-        </Image>
+        <Image style={css.imgStyle} source={require('../assets/cafe.png')} />
+        <View style={css.floatingPanel}>
+          <Text style={css.itemTitle}>{titulo}</Text>
+          <Text style={css.itemAddress}>{direccion}</Text>
+          <Text style={css.itemTime}>{horario}</Text>
+        </View>
         <View style={css.botonera}>
           <Button transparent style={css.btn} onPress={this.onNuevaVisita}>
             <Icon ios="md-add" android="md-add" style={css.btnIcon} />

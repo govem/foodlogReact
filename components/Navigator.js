@@ -44,7 +44,7 @@ const MapScreen = ({ navigation }) => (
 const NuevoLugarScreen = ({ navigation }) => (
   <View style={styles.container}>
     <HeaderComponent title="Nuevo Lugar" navigator={navigation} headerMode="modalCancel" />
-    <NewPlaceComponent />
+    <NewPlaceComponent navigator={navigation} />
   </View>
 );
 
