@@ -8,6 +8,7 @@ import { Button, Icon } from 'native-base';
 import StarComponent from './StarComponent';
 
 import appstore from '../stores/Appstore.js';
+import endpoints from '../utils/Endpoints';
 
 @observer
 class PlaceDetailComponent extends React.Component {
@@ -64,8 +65,7 @@ class PlaceDetailComponent extends React.Component {
     ];
 
     var titulo = appstore.placesStore.selectedPlace.name;
-    var direccion = appstore.placesStore.selectedPlace.address;
-    var horario = appstore.placesStore.selectedPlace.time;
+    var direccion = appstore.placesStore.selectedPlace.vicinity;
 
     var headerComponent = <Text style={css.visitTitle}>Visitas anteriores</Text>;
     var emptyComponent = (
@@ -75,13 +75,25 @@ class PlaceDetailComponent extends React.Component {
       </View>
     );
 
+    var imgUrl;
+    if (
+      appstore.placesStore.selectedPlace.photos !== undefined &&
+      appstore.placesStore.selectedPlace.photos.length > 0
+    ) {
+      imgUrl =
+        endpoints.PLACE_PHOTO_URL +
+        '?height=230&reference=' +
+        appstore.placesStore.selectedPlace.photos[0].photo_reference;
+    }
+
     return (
       <View style={css.container}>
-        <Image style={css.imgStyle} source={require('../assets/cafe.png')} />
-        <View style={css.floatingPanel}>
-          <Text style={css.itemTitle}>{titulo}</Text>
-          <Text style={css.itemAddress}>{direccion}</Text>
-          <Text style={css.itemTime}>{horario}</Text>
+        <Image style={css.imgStyle} source={{ uri: imgUrl }} />
+        <View style={css.floatingContainer}>
+          <View style={css.floatingPanel}>
+            <Text style={css.itemTitle}>{titulo}</Text>
+            <Text style={css.itemAddress}>{direccion}</Text>
+          </View>
         </View>
         <View style={css.botonera}>
           <Button transparent style={css.btn} onPress={this.onNuevaVisita}>

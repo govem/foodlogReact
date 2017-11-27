@@ -8,21 +8,22 @@ const style = StyleSheet.create({
   },
   imgStyle: {
     height: 230,
-    width: '100%',
-    maxWidth: '100%',
-    padding: 10
+    width: '100%'
   },
-  floatingPanel: {
+  floatingContainer: {
     height: 70,
     position: 'absolute',
     width: '100%',
+    maxWidth: '100%'
+  },
+  floatingPanel: {
     borderRadius: 4,
     backgroundColor: colors.blancoTransparente,
-    margin: 10,
     paddingLeft: 10,
     paddingRight: 10,
     paddingBottom: 10,
     paddingTop: 6,
+    margin: 10,
     shadowColor: colors.negro,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,

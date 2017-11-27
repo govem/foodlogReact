@@ -137,14 +137,14 @@ class Appstore {
   }
 
   @action
-  changeIndex(index) {
+  changeIndex(index, force) {
     this.selectedTabIndex = index;
     if (this.selectedTabIndex == this.INDEX_POR_VISITAR) {
-      if (appstore.placesStore.notVisitedUserPlaces.length == 0) {
+      if (!appstore.placesStore.notvisitedLoaded || force == true) {
         appstore.placesStore.userPlaces(false);
       }
     } else {
-      if (appstore.placesStore.visitedUserPlaces.length == 0) {
+      if (!appstore.placesStore.visitedLoaded || force == true) {
         appstore.placesStore.userPlaces(true);
       }
     }

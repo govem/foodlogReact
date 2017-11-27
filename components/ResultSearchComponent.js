@@ -17,6 +17,7 @@ class ResultSearchComponent extends React.Component {
 
   addresult = errmsg => {
     if (errmsg == null) {
+      appstore.changeIndex(appstore.INDEX_POR_VISITAR, true);
       this.props.navigator.dispatch(NavigationActions.back());
     } else {
       //TODO mostrar error

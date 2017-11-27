@@ -40,7 +40,7 @@ class CardComponent extends React.Component {
   };
 
   getVisits = () => {
-    if (this.props.visited == true) {
+    if (this.props.visited == true && this.props.item.visitas != null) {
       return this.props.item.visits + ' / ' + this.props.item.visitas.length + ' tuyas';
     } else {
       return this.props.item.visits;
@@ -55,7 +55,7 @@ class CardComponent extends React.Component {
   render() {
     var filteredVisits = [];
     var hasMoreData = 0;
-    if (this.props.visited == true) {
+    if (this.props.visited == true && this.props.item.visitas != null) {
       if (this.props.item.visitas.length > 2) {
         filteredVisits = this.props.item.visitas.slice(0, 2);
         hasMoreData = this.props.item.visitas.length - 2;

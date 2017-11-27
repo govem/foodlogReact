@@ -14,6 +14,9 @@ class PlacesStore {
   @observable visitedUserPlaces = [];
   @observable notVisitedUserPlaces = [];
 
+  @observable visitedLoaded = false;
+  @observable notvisitedLoaded = false;
+
   constructor(appstore) {
     this.appstore = appstore;
     this.searchResults = [];
@@ -89,9 +92,9 @@ class PlacesStore {
   }
 
   @action
-  userPlaces(visited) {
-    var visited = visited == true ? 'visited' : 'notvisited';
-    var url = endpoints.USER_PLACES + '/' + this.appstore.loggedUser._id + '/' + visited;
+  userPlaces(visited, callback) {
+    var visiturl = visited == true ? 'visited' : 'notvisited';
+    var url = endpoints.USER_PLACES + '/' + this.appstore.loggedUser._id + '/' + visiturl;
     fetch(url, {
       method: 'GET',
       headers: {
@@ -105,17 +108,24 @@ class PlacesStore {
       .then(
         action('userplacesresult', response => {
           console.log('lugares de usuario obtenidos');
-          console.log(JSON.stringify(response));
           if (visited == true) {
             this.visitedUserPlaces = response;
+            this.visitedLoaded = true;
           } else {
             this.notVisitedUserPlaces = response;
+            this.notvisitedLoaded = true;
+          }
+          if (callback != null) {
+            callback();
           }
         })
       )
       .catch(
         action('userplacesfail', err => {
           console.log('fallo al buscar lugares de usuario: ' + err.message);
+          if (callback != null) {
+            callback();
+          }
         })
       );
   }

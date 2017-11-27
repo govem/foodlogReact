@@ -34,8 +34,14 @@ class MainComponent extends React.Component {
 
   onRefresh = () => {
     this.setState({ refreshing: true });
-    console.log('refreshing');
-    //TODO buscar datos y setear false cuando lleguen los datos
+    if (this.selectedTabIndex == this.INDEX_POR_VISITAR) {
+      appstore.placesStore.userPlaces(false, this.refreshDone);
+    } else {
+      appstore.placesStore.userPlaces(true, this.refreshDone);
+    }
+  };
+
+  refreshDone = () => {
     this.setState({ refreshing: false });
   };
 
