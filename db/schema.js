@@ -61,18 +61,20 @@ schema = {
   visits: {
     visitid1: {
       date: 'dd/mm/yy',
-      user: 'userid1',
-      place: 'placeid1',
-      dishes: {
-        dishid1: 1,
-        dishid2: 4
-      }
+      userId: 'userid1',
+      placeId: 'placeid1',
+      dishes: [
+				{ 
+					dish: { dishId, placeId:...},
+					value: 3
+				}
+			]
     }
   },
   dishes: {
     dishid1: {
-      place: 'placeid1',
-      picture: 'asdasd',
+			placeId: 'placeid1',
+			name: 'asdasda',
       price: 123123
     }
   },

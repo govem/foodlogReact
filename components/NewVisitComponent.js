@@ -9,95 +9,100 @@ import { View, Text, FlatList } from 'react-native';
 import StarComponent from './StarComponent';
 
 import appstore from '../stores/Appstore.js';
+import { NavigationActions } from 'react-navigation';
 
 @observer
 export default class NewVisitComponent extends React.Component {
-  platos = [
-    {
-      id: 1,
-      name: 'cafe',
-      value: 4
-    },
-    {
-      id: 2,
-      name: 'cafe',
-      value: 4
-    },
-    {
-      id: 3,
-      name: 'cafe',
-      value: 4
-    },
-    {
-      id: 4,
-      name: 'cafe',
-      value: 4
-    },
-    {
-      id: 5,
-      name: 'cafe',
-      value: 4
-    },
-    {
-      id: 6,
-      name: 'cafe',
-      value: 4
-    },
-    {
-      id: 7,
-      name: 'cafe',
-      value: 4
-    },
-    {
-      id: 8,
-      name: 'cafe',
-      value: 4
-    }
-  ];
-
   constructor(props) {
     super(props);
     this.state = {
       textToAdd: '',
-      valueToAdd: 0
+      valueToAdd: 0,
+      validForm: false,
+      dishes: [],
+      date: new Date()
     };
   }
 
   changeAdd = value => {
-    this.setState({ textToAdd: value });
+    this.setState({ textToAdd: value }, this.checkForm);
   };
 
-  onValue1 = () => {
-    if (this.state.valueToAdd != 1) {
-      this.setState({ valueToAdd: 1 });
+  checkForm = () => {
+    if (this.state.textToAdd.length > 0 && this.state.valueToAdd > 0) {
+      this.setState({ validForm: true });
     } else {
-      this.setState({ valueToAdd: 0 });
+      this.setState({ validForm: false });
     }
   };
 
+  onValue1 = () => {
+    this.setState({ valueToAdd: 1 }, this.checkForm);
+  };
+
   onValue2 = () => {
-    this.setState({ valueToAdd: 2 });
+    this.setState({ valueToAdd: 2 }, this.checkForm);
   };
 
   onValue3 = () => {
-    this.setState({ valueToAdd: 3 });
+    this.setState({ valueToAdd: 3 }, this.checkForm);
   };
 
   onValue4 = () => {
-    this.setState({ valueToAdd: 4 });
+    this.setState({ valueToAdd: 4 }, this.checkForm);
   };
 
   onValue5 = () => {
-    this.setState({ valueToAdd: 5 });
+    this.setState({ valueToAdd: 5 }, this.checkForm);
+  };
+
+  onAdd = () => {
+    var temp = this.state.dishes;
+    temp.push({
+      value: this.state.valueToAdd,
+      name: this.state.textToAdd,
+      id: this.state.dishes.length
+    });
+    this.setState(
+      {
+        dishes: temp,
+        textToAdd: '',
+        valueToAdd: 0
+      },
+      this.checkForm
+    );
+  };
+
+  onDelete = index => {
+    var salida = [];
+    var temp = this.state.dishes;
+    for (var i = 0; i < temp.length; i++) {
+      if (temp[i].id != index) {
+        salida.push(temp);
+      }
+    }
+    this.setState({ dishes: salida });
+  };
+
+  onSave = () => {
+    appstore.placesStore.addVisit(this.state.date, this.state.dishes, this.onSaveOk, this.onSaveFail);
+  };
+
+  onSaveOk = () => {
+    this.props.navigator.dispatch(NavigationActions.back());
+  };
+
+  onSaveFail = msg => {
+    //TODO controlar error
   };
 
   render() {
+    var place = appstore.placesStore.selectedPlace;
     return (
       <LinearGradient colors={[colors.naranjo, colors.naranjoGradientEnd]} style={css.gradient}>
         <View style={css.floatingPanel}>
-          <Text style={css.itemTitle}>{appstore.placesStore.selectedPlace.name}</Text>
-          <Text style={css.itemAddress}>{appstore.placesStore.selectedPlace.address}</Text>
-          <Text style={css.itemTime}>{appstore.placesStore.selectedPlace.time}</Text>
+          <Text style={css.itemTitle}>{place.name}</Text>
+          <Text style={css.itemAddress}>{place.vicinity}</Text>
         </View>
         <View style={[css.floatingPanel, css.floatingPanelSearch]}>
           <Input
@@ -105,6 +110,7 @@ export default class NewVisitComponent extends React.Component {
             placeholderTextColor="#ccc"
             style={css.inputSearch}
             onChangeText={this.changeAdd}
+            value={this.state.textToAdd}
           />
           <View style={css.divStars}>
             <Button transparent onPress={this.onValue1}>
@@ -124,20 +130,27 @@ export default class NewVisitComponent extends React.Component {
             </Button>
           </View>
           <View style={css.divButton}>
-            <Button onPress={this.onAdd} style={[css.btn, css.btnAzul]}>
+            <Button
+              onPress={this.onAdd}
+              style={this.state.validForm ? [css.btn, css.btnAzul] : [css.btn, css.btnGris]}
+              disabled={!this.state.validForm}
+            >
               <Text style={css.btnText}>Agregar</Text>
             </Button>
           </View>
         </View>
         <View style={[css.floatingPanel, css.floatingPanelList]}>
           <FlatList
-            data={this.platos}
+            data={this.state.dishes}
             keyExtractor={item => item.id}
             alwaysBounceVertical={false}
             ListHeaderComponent={<Text style={css.titleGris}>En esta visita has consumido:</Text>}
             ListEmptyComponent={<Text style={css.noData}>Nada Todavía!</Text>}
             renderItem={({ item, index }) => (
               <View style={index % 2 != 0 ? css.divPlato : css.divPlatoGris}>
+                <Button onPress={() => this.onDelete(index)} style={css.btnRemove}>
+                  <Icon name="remove-circle" style={css.removeIcon} />
+                </Button>
                 <Text style={css.plato}>{item.name}</Text>
                 <StarComponent starCount={item.value} />
               </View>
@@ -146,7 +159,7 @@ export default class NewVisitComponent extends React.Component {
         </View>
         <View style={css.divFinalButtons}>
           <Button onPress={this.onSave} style={[css.btnFull, css.btn, css.btnAzul]}>
-            <Text style={css.btnTextFull}>Guardar</Text>
+            <Text style={css.btnTextFull}>Guardar Visita</Text>
           </Button>
         </View>
       </LinearGradient>

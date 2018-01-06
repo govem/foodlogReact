@@ -2,6 +2,7 @@
 
 import { observable, action } from 'mobx';
 import endpoints from '../utils/Endpoints';
+import services from '../utils/Services';
 
 class PlacesStore {
   @observable visitedList;
@@ -24,33 +25,35 @@ class PlacesStore {
     this.searchError = false;
   }
 
+  /** ----------------------------------------------------------- */
   @action
   loadVisited() {}
 
+  /** ----------------------------------------------------------- */
   @action
   loadNotVisited() {}
 
+  /** ----------------------------------------------------------- */
   @action
   setSelectedPlace(place) {
     this.selectedPlace = place;
   }
 
+  /** ----------------------------------------------------------- */
   @action
   searchPlace(keyword, latitude, longitude, callback, failcallback) {
-    fetch(
-      endpoints.SEARCH_URL +
-        '?userid=' +
-        this.appstore.loggedUser._id +
-        '&search=' +
-        keyword +
-        '&location=' +
-        latitude +
-        ',' +
-        longitude
-    )
-      .then(response => {
-        return response.json();
-      })
+    services
+      .doGet(
+        endpoints.SEARCH_URL +
+          '?userid=' +
+          this.appstore.loggedUser._id +
+          '&search=' +
+          keyword +
+          '&location=' +
+          latitude +
+          ',' +
+          longitude
+      )
       .then(
         action('searchresult', response => {
           console.log('result ok: ' + response.length);
@@ -66,17 +69,15 @@ class PlacesStore {
       );
   }
 
+  /** ----------------------------------------------------------- */
   @action
   addPlace(place, callback) {
     console.log(this.appstore.loggedUser);
-    fetch(endpoints.ADD_PLACE, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ place: place, user: { _id: this.appstore.loggedUser._id } })
-    })
+    services
+      .doPost(endpoints.ADD_PLACE, {
+        place: place,
+        user: { _id: this.appstore.loggedUser._id }
+      })
       .then(
         action('addresult', response => {
           console.log('add ok');
@@ -91,20 +92,13 @@ class PlacesStore {
       );
   }
 
+  /** ----------------------------------------------------------- */
   @action
   userPlaces(visited, callback) {
     var visiturl = visited == true ? 'visited' : 'notvisited';
     var url = endpoints.USER_PLACES + '/' + this.appstore.loggedUser._id + '/' + visiturl;
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => {
-        return response.json();
-      })
+    services
+      .doGet(url)
       .then(
         action('userplacesresult', response => {
           console.log('lugares de usuario obtenidos');
@@ -126,6 +120,56 @@ class PlacesStore {
           if (callback != null) {
             callback();
           }
+        })
+      );
+  }
+
+  /** ----------------------------------------------------------- */
+  @action
+  addVisit(date, dishes, callback, failcallback) {
+    services
+      .doPost(endpoints.ADD_VISIT, {
+        date: date,
+        userId: this.appstore.loggedUser._id,
+        placeId: this.selectedPlace._id,
+        dishes: dishes
+      })
+      .then(
+        action('addvisitresult', response => {
+          console.log('visita guardada');
+          if (callback != null) {
+            callback();
+          }
+        })
+      )
+      .catch(
+        action('addvisitfail', err => {
+          console.log('fallo agregando visita:' + err.message);
+          if (failcallback != null) {
+            failcallback();
+          }
+        })
+      );
+  }
+
+  /** ----------------------------------------------------------- */
+  @action
+  loadVisits() {
+    services
+      .doPost(endpoints.LOAD_VISITS, {
+        userId: this.appstore.loggedUser._id,
+        placeId: this.selectedPlace._id
+      })
+      .then(
+        action('loadvisitsresult', response => {
+          console.log('visitas cargadas');
+          this.selectedPlace.visits = response;
+        })
+      )
+      .catch(
+        action('loadvisitsfail', err => {
+          console.log('fallo cargando visitas:' + err.message);
+          //TODO
         })
       );
   }

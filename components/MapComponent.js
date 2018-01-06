@@ -12,8 +12,9 @@ class MapComponent extends React.Component {
 
   render() {
     var place = appstore.placesStore.selectedPlace;
-    var latdelta = place.geometry.viewport.northeast.lat - place.geometry.viewport.southwest.lat;
-    var lngdelta = place.geometry.viewport.northeast.lng - place.geometry.viewport.southwest.lng;
+    var vp = place.viewport;
+    var latdelta = vp.northeast.lat - vp.southwest.lat;
+    var lngdelta = vp.northeast.lng - vp.southwest.lng;
 
     return (
       <View style={css.container}>
@@ -32,8 +33,8 @@ class MapComponent extends React.Component {
               latitude: place.geometry.location.lat,
               longitude: place.geometry.location.lng
             }}
-            title={appstore.placesStore.selectedPlace.name}
-            description={appstore.placesStore.selectedPlace.vicinity}
+            title={place.name}
+            description={place.vicinity}
           />
         </MapView>
       </View>

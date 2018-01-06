@@ -14,7 +14,14 @@ import endpoints from '../utils/Endpoints';
 class PlaceDetailComponent extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      visits: []
+    };
   }
+
+  componentDidMount = () => {
+    appstore.placesStore.loadVisits();
+  };
 
   renderHeader = ({ section }) => (
     <View style={css.divItemVisita}>
@@ -48,22 +55,6 @@ class PlaceDetailComponent extends React.Component {
   };
 
   render() {
-    var data = [
-      { data: [{ id: 1, name: 'plato', value: 3 }], title: '9 jul 17' },
-      {
-        data: [
-          { id: 1, name: 'plato', value: 3 },
-          { id: 2, name: 'plato', value: 3 },
-          { id: 3, name: 'plato', value: 3 }
-        ],
-        title: '10 jul 17'
-      },
-      { data: [{ id: 1, name: 'plato', value: 3 }, { id: 2, name: 'plato', value: 3 }], title: '11 jul 17' },
-      { data: [{ id: 1, name: 'plato', value: 3 }, { id: 2, name: 'plato', value: 3 }], title: '12 jul 17' },
-      { data: [{ id: 1, name: 'plato', value: 3 }, { id: 2, name: 'plato', value: 3 }], title: '13 jul 17' },
-      { data: [{ id: 1, name: 'plato', value: 3 }, { id: 2, name: 'plato', value: 3 }], title: '14 jul 17' }
-    ];
-
     var titulo = appstore.placesStore.selectedPlace.name;
     var direccion = appstore.placesStore.selectedPlace.vicinity;
 
@@ -114,9 +105,10 @@ class PlaceDetailComponent extends React.Component {
         </View>
         {headerComponent}
         <SectionList
+          data={appstore.placesStore.selectedPlace.visits}
           ListEmptyComponent={emptyComponent}
           style={css.listaVisitas}
-          sections={data}
+          sections={this.state.visits}
           keyExtractor={item => item.id}
           renderSectionHeader={this.renderHeader}
           renderItem={this.renderItem}

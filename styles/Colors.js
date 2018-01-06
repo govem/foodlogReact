@@ -10,7 +10,9 @@ const colors = {
   azulOscuro: '#155DB1',
   grisClaro: '#9B9B9B',
   naranjo: '#FDA63A',
-  naranjoGradientEnd: '#FEC750'
+  naranjoGradientEnd: '#FEC750',
+  rojo: '#ff0000',
+  transparente: 'rgba(0,0,0,0)'
 };
 
 export default colors;

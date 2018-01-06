@@ -75,6 +75,11 @@ const css = StyleSheet.create({
     fontSize: 38,
     color: colors.azulClaro
   },
+  removeIcon: {
+    marginLeft: 0,
+    marginRight: 0,
+    color: colors.rojo
+  },
   divButton: {
     flexDirection: 'row',
     justifyContent: 'flex-end'
@@ -83,10 +88,18 @@ const css = StyleSheet.create({
     borderRadius: 4,
     paddingLeft: 20,
     paddingRight: 20,
-    height: 36
+    height: 40
   },
   btnAzul: {
     backgroundColor: colors.azulClaro
+  },
+  btnRemove: {
+    height: 40,
+    width: 36,
+    backgroundColor: colors.transparente,
+    marginRight: 8,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   btnGris: {
     backgroundColor: colors.grisClaro

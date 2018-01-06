@@ -5,7 +5,9 @@ const endpoint = {
   PLACE_PHOTO_URL: BASE_URL + '/getPlacePhoto',
   ADD_PLACE: BASE_URL + '/addPlace',
   LOGIN: BASE_URL + '/login',
-  USER_PLACES: BASE_URL + '/places'
+  USER_PLACES: BASE_URL + '/places',
+  ADD_VISIT: BASE_URL + '/addVisit',
+  LOAD_VISITS: BASE_URL + '/loadVisits'
 };
 
 export default endpoint;

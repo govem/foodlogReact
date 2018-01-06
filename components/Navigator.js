@@ -30,7 +30,7 @@ const DetailScreen = ({ navigation }) => (
 const NuevaVisitaScreen = ({ navigation }) => (
   <View style={styles.container}>
     <HeaderComponent title="Nueva Visita" navigator={navigation} headerMode="modalCancel" />
-    <NewVisitComponent />
+    <NewVisitComponent navigator={navigation} />
   </View>
 );
 
