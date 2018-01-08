@@ -9,7 +9,6 @@ import { View, Text, FlatList } from 'react-native';
 import StarComponent from './StarComponent';
 
 import appstore from '../stores/Appstore.js';
-import { NavigationActions } from 'react-navigation';
 
 @observer
 export default class NewVisitComponent extends React.Component {
@@ -89,7 +88,8 @@ export default class NewVisitComponent extends React.Component {
   };
 
   onSaveOk = () => {
-    this.props.navigator.dispatch(NavigationActions.back());
+    this.props.navigator.state.params.placeDetail.refreshVisits();
+    this.props.navigator.goBack(null);
   };
 
   onSaveFail = msg => {
@@ -158,7 +158,13 @@ export default class NewVisitComponent extends React.Component {
           />
         </View>
         <View style={css.divFinalButtons}>
-          <Button onPress={this.onSave} style={[css.btnFull, css.btn, css.btnAzul]}>
+          <Button
+            onPress={this.onSave}
+            disabled={this.state.dishes.length == 0}
+            style={
+              this.state.dishes.length == 0 ? [css.btnFull, css.btn, css.btnGris] : [css.btnFull, css.btn, css.btnAzul]
+            }
+          >
             <Text style={css.btnTextFull}>Guardar Visita</Text>
           </Button>
         </View>

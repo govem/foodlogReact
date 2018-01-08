@@ -7,7 +7,9 @@ const endpoint = {
   LOGIN: BASE_URL + '/login',
   USER_PLACES: BASE_URL + '/places',
   ADD_VISIT: BASE_URL + '/addVisit',
-  LOAD_VISITS: BASE_URL + '/loadVisits'
+  LOAD_VISITS: BASE_URL + '/loadVisits',
+  ADD_NOTE: BASE_URL + '/note',
+  LOAD_NOTES: BASE_URL + '/note'
 };
 
 export default endpoint;

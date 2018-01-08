@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import { View, Text, FlatList, Image, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, Image, TouchableOpacity, TextInput } from 'react-native';
 import { LinearGradient, FileSystem, ImagePicker } from 'expo';
-import { Card, CardItem, Icon, Button, ActionSheet } from 'native-base';
+import { Card, CardItem, List, Icon, Button, ActionSheet } from 'native-base';
 import Collapsible from 'react-native-collapsible';
 import HeaderComponent from './HeaderComponent';
 
@@ -11,57 +11,70 @@ import appstore from '../stores/Appstore.js';
 import colors from '../styles/Colors';
 import css from '../styles/NotasStyle.js';
 
+import moment from 'moment';
+
 @observer
 class NotasComponent extends React.Component {
-  notas = [
-    {
-      id: 1,
-      date: '01/01/01',
-      note:
-        'Set to false to remove extra font padding intended to make space for certain ascenders / descenders. With some fonts, this padding can make text look slightly misaligned when centered vertically. For best results also set textAlignVertical to center. Default is true.'
-    },
-    {
-      id: 2,
-      date: '01/01/01',
-      note:
-        'Set to false to remove extra font padding intended to make space for certain ascenders / descenders. With some fonts, this padding can make text look slightly misaligned when centered vertically. For best results also set textAlignVertical to center. Default is true.'
-    },
-    {
-      id: 3,
-      date: '01/01/01',
-      image: true,
-      note:
-        'Set to false to remove extra font padding intended to make space for certain ascenders / descenders. With some fonts, this padding can make text look slightly misaligned when centered vertically. For best results also set textAlignVertical to center. Default is true.'
-    },
-    {
-      id: 4,
-      date: '01/01/01',
-      note:
-        'Set to false to remove extra font padding intended to make space for certain ascenders / descenders. With some fonts, this padding can make text look slightly misaligned when centered vertically. For best results also set textAlignVertical to center. Default is true.'
-    },
-    {
-      id: 5,
-      date: '01/01/01',
-      note:
-        'Set to false to remove extra font padding intended to make space for certain ascenders / descenders. With some fonts, this padding can make text look slightly misaligned when centered vertically. For best results also set textAlignVertical to center. Default is true.'
-    }
-  ];
-
   BUTTONS = ['Desde la cámara', 'Desde la galería', 'Cancelar'];
 
   constructor(props) {
     super(props);
     this.state = {
       newNoteOpen: false,
-      photoData: null
+      photoData: null,
+      noteText: '',
+      newNoteTitle: 'Nueva nota',
+      loadingNotes: false
     };
   }
+
+  componentDidMount = () => {
+    this.setState({ loadingNotes: true }, () => {
+      appstore.notesStore.loadNotes(this.onOkLoad, this.onFailLoad);
+    });
+  };
 
   openNewNote = () => {
     this.setState({ newNoteOpen: !this.state.newNoteOpen });
   };
 
-  onNewNote = () => {};
+  onSaveNote = () => {
+    console.log('guardando nota');
+    this.setState({
+      newNoteOpen: false,
+      newNoteTitle: 'Guardando nota...'
+    });
+    appstore.notesStore.saveNote(this.state.noteText, this.state.photoData, this.onOkSave, this.onFailSave);
+  };
+
+  onOkSave = () => {
+    this.setState({
+      newNoteTitle: 'Nueva nota',
+      noteText: '',
+      photoData: null,
+      loadingNotes: true
+    });
+    appstore.notesStore.loadNotes(this.onOkLoad, this.onFailLoad);
+  };
+
+  onFailSave = () => {
+    this.setState({
+      newNoteOpen: true,
+      newNoteTitle: 'Error guardando nota'
+    });
+  };
+
+  onOkLoad = () => {
+    this.setState({ loadingNotes: false });
+    if (appstore.placesStore.selectedPlace.notes.length == 0) {
+      this.setState({ newNoteOpen: true });
+    }
+  };
+
+  onFailLoad = () => {
+    //TODO mensaje de error?
+    this.setState({ loadingNotes: false });
+  };
 
   onPhoto = () => {
     ActionSheet.show(
@@ -104,8 +117,8 @@ class NotasComponent extends React.Component {
 
   noteComponent = item => (
     <Card style={css.cardNote}>
-      <CardItem>
-        <Text style={css.dateNote}>{item.date}</Text>
+      <CardItem style={css.cardItem}>
+        <Text style={css.dateNote}>{moment(item.createdAt).format('L')}</Text>
       </CardItem>
 
       {item.image == true && (
@@ -113,17 +126,36 @@ class NotasComponent extends React.Component {
           <Image source={require('../assets/food.jpg')} style={css.imageNote} />
         </CardItem>
       )}
-      <CardItem>
-        <Text style={css.textNote}>{item.note}</Text>
+      <CardItem style={css.cardItem}>
+        <Text style={css.textNote}>{item.text}</Text>
       </CardItem>
     </Card>
   );
+
+  changeText = value => {
+    this.setState({ noteText: value });
+  };
+
+  emptyComponent = () => {
+    var mensaje = 'Aún no tienes notas sobre este lugar';
+    if (this.state.loadingNotes) {
+      mensaje = 'Cargando notas...';
+    }
+    return <Text style={css.noData}>{mensaje}</Text>;
+  };
+
+  swipeDeleteNote = (secId, rowId, rowMap) => {};
 
   render() {
     var collapsibleNewNote = (
       <Collapsible collapsed={!this.state.newNoteOpen}>
         <View>
-          <TextInput multiline={true} style={css.textInput} />
+          <TextInput
+            multiline={true}
+            style={css.textInput}
+            onChangeText={this.changeText}
+            value={this.state.noteText}
+          />
           <View style={css.divBtns}>
             {this.state.photoData != null ? (
               <View style={css.divPhotoBtns}>
@@ -142,7 +174,14 @@ class NotasComponent extends React.Component {
                 <Icon name="image" style={css.icnBlanco} />
               </Button>
             )}
-            <Button onPress={this.onSaveNote} iconLeft style={css.btnNewNote}>
+            <Button
+              onPress={this.onSaveNote}
+              iconLeft
+              style={
+                this.state.noteText.length > 0 || this.state.photoData != null ? css.btnNewNote : css.btnNewNoteDisabled
+              }
+              disabled={this.state.noteText.length == 0 && this.state.photoData == null}
+            >
               <Icon name="add" style={css.icnBlanco} />
               <Text style={css.textBtnNewNote}>Guardar</Text>
             </Button>
@@ -151,19 +190,20 @@ class NotasComponent extends React.Component {
       </Collapsible>
     );
 
+    var place = appstore.placesStore.selectedPlace;
+
     return (
       <View style={css.container}>
         <HeaderComponent title="Notas" navigator={this.props.navigation} headerMode="modalOk" />
         <LinearGradient colors={[colors.naranjo, colors.naranjoGradientEnd]} style={css.gradient}>
           <View style={css.floatingPanel}>
-            <Text style={css.itemTitle}>{appstore.placesStore.selectedPlace.name}</Text>
-            <Text style={css.itemAddress}>{appstore.placesStore.selectedPlace.address}</Text>
-            <Text style={css.itemTime}>{appstore.placesStore.selectedPlace.time}</Text>
+            <Text style={css.itemTitle}>{place.name}</Text>
+            <Text style={css.itemAddress}>{place.vicinity}</Text>
           </View>
           <View style={css.floatingPanel}>
             <TouchableOpacity onPress={this.openNewNote}>
               <View style={css.flexrow}>
-                <Text style={[css.flexFull, css.titleNewNote]}>Nueva nota</Text>
+                <Text style={[css.flexFull, css.titleNewNote]}>{this.state.newNoteTitle}</Text>
                 <Icon
                   name={this.state.newNoteOpen == false ? 'ios-arrow-back' : 'ios-arrow-down'}
                   style={{ color: colors.grisClaro }}
@@ -172,13 +212,26 @@ class NotasComponent extends React.Component {
             </TouchableOpacity>
             {collapsibleNewNote}
           </View>
-          <FlatList
+          <List
             style={css.listaNotas}
-            data={this.notas}
-            keyExtractor={item => item.id}
+            dataSource={appstore.placesStore.selectedPlace.notes}
+            keyExtractor={item => item._id}
             alwaysBounceVertical={false}
-            ListEmptyComponent={<Text style={css.noData}>No tienes ninguna nota</Text>}
-            renderItem={({ item }) => this.noteComponent(item)}
+            ListEmptyComponent={this.emptyComponent}
+            renderRow={({ item }) => this.noteComponent(item)}
+            disableRightSwipe={true}
+            renderLeftHiddenRow={(data, secId, rowId, rowMap) => (
+              <Button full danger onPress={_ => this.deleteRow(secId, rowId, rowMap)}>
+                <Icon active name="trash" />
+              </Button>
+            )}
+            renderRightHiddenRow={(data, secId, rowId, rowMap) => (
+              <Button full danger onPress={_ => this.deleteRow(secId, rowId, rowMap)}>
+                <Icon active name="trash" />
+              </Button>
+            )}
+            leftOpenValue={-75}
+            rightOpenValue={75}
           />
         </LinearGradient>
       </View>

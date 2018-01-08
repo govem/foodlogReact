@@ -10,24 +10,60 @@ import StarComponent from './StarComponent';
 import appstore from '../stores/Appstore.js';
 import endpoints from '../utils/Endpoints';
 
+import moment from 'moment';
+import localization from 'moment/locale/es';
+
 @observer
 class PlaceDetailComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      visits: []
+      visits: [],
+      loadingVisits: false,
+      loadError: false,
+      loadMsg: ''
     };
+    moment.locale('es');
   }
 
   componentDidMount = () => {
-    appstore.placesStore.loadVisits();
+    if (this.props.navigator.state.params.visited == true) {
+      this.refreshVisits();
+    }
   };
 
-  renderHeader = ({ section }) => (
-    <View style={css.divItemVisita}>
-      <Text style={css.itemFecha}>{section.title}</Text>
-    </View>
-  );
+  refreshVisits = () => {
+    this.setState(
+      {
+        loadingVisits: true
+      },
+      () => {
+        appstore.placesStore.loadVisits(this.okCallback, this.failCallback);
+      }
+    );
+  };
+
+  okCallback = () => {
+    this.setState({ loadingVisits: false });
+  };
+
+  failCallback = msg => {
+    this.setState({
+      loadingVisits: false,
+      loadError: true,
+      loadMsg: msg
+    });
+  };
+
+  renderHeader = ({ section }) => {
+    return (
+      <View style={css.divItemVisita}>
+        <Text style={css.itemFecha}>
+          {moment(section.title).fromNow(true) + ' (' + moment(section.title).format('L') + ')'}
+        </Text>
+      </View>
+    );
+  };
 
   renderItem = ({ item, index }) => (
     <View key={item.id} style={index % 2 == 0 ? css.itemPlatoGris : css.itemPlato}>
@@ -37,7 +73,7 @@ class PlaceDetailComponent extends React.Component {
   );
 
   onNuevaVisita = () => {
-    this.props.navigator.navigate('NuevaVisita');
+    this.props.navigator.navigate('NuevaVisita', { placeDetail: this });
   };
 
   onFavorite = () => {};
@@ -59,12 +95,22 @@ class PlaceDetailComponent extends React.Component {
     var direccion = appstore.placesStore.selectedPlace.vicinity;
 
     var headerComponent = <Text style={css.visitTitle}>Visitas anteriores</Text>;
-    var emptyComponent = (
-      <View style={css.noDataDiv}>
-        <Text style={css.noData}>No tienes ninguna visita!</Text>
-        <Text style={css.noData}>Qué estás esperando para visitarlo?</Text>
-      </View>
-    );
+    var emptyComponent;
+
+    if (this.state.loadingVisits) {
+      emptyComponent = (
+        <View style={css.noDataDiv}>
+          <Text style={css.noData}>Cargando visitas...</Text>
+        </View>
+      );
+    } else {
+      emptyComponent = (
+        <View style={css.noDataDiv}>
+          <Text style={css.noData}>No tienes ninguna visita!</Text>
+          <Text style={css.noData}>Qué estás esperando para visitarlo?</Text>
+        </View>
+      );
+    }
 
     var imgUrl;
     if (
@@ -105,11 +151,10 @@ class PlaceDetailComponent extends React.Component {
         </View>
         {headerComponent}
         <SectionList
-          data={appstore.placesStore.selectedPlace.visits}
           ListEmptyComponent={emptyComponent}
           style={css.listaVisitas}
-          sections={this.state.visits}
-          keyExtractor={item => item.id}
+          sections={appstore.placesStore.selectedPlace.visits}
+          keyExtractor={item => item._id}
           renderSectionHeader={this.renderHeader}
           renderItem={this.renderItem}
         />

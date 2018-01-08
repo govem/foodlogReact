@@ -24,7 +24,21 @@ const css = StyleSheet.create({
   cardNote: {
     marginLeft: 10,
     marginRight: 10,
-    borderRadius: 4
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderRadius: 4,
+    flexDirection: 'column'
+  },
+  cardItem: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    paddingLeft: 0,
+    paddingRight: 0,
+    paddingTop: 0,
+    paddingBottom: 0,
+    margin: 0
   },
   itemTitle: {
     fontSize: 20,
@@ -43,14 +57,16 @@ const css = StyleSheet.create({
   },
   noData: {
     textAlign: 'center',
-    paddingTop: 20
+    paddingTop: 20,
+    backgroundColor: colors.transparente
   },
   note: {
     backgroundColor: colors.blanco
   },
   dateNote: {
     color: colors.azulClaro,
-    fontSize: 12
+    fontSize: 12,
+    paddingBottom: 8
   },
   textNote: {
     color: colors.casiNegro,
@@ -90,7 +106,8 @@ const css = StyleSheet.create({
     padding: 10,
     paddingTop: 10,
     height: 80,
-    fontSize: 12
+    fontSize: 14,
+    lineHeight: 20
   },
   divBtns: {
     flexDirection: 'row',
@@ -102,6 +119,11 @@ const css = StyleSheet.create({
   btnNewNote: {
     marginTop: 10,
     backgroundColor: colors.azulClaro,
+    borderRadius: 4
+  },
+  btnNewNoteDisabled: {
+    marginTop: 10,
+    backgroundColor: colors.grisClaro,
     borderRadius: 4
   },
   textBtnNewNote: {

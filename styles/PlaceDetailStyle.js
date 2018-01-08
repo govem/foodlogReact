@@ -63,7 +63,9 @@ const style = StyleSheet.create({
     marginRight: 12,
     fontSize: 16,
     paddingLeft: 20,
-    paddingBottom: 4
+    paddingBottom: 4,
+    paddingTop: 10,
+    textAlign: 'center'
   },
   divListaVisitas: {
     flex: 1,

@@ -36,6 +36,7 @@ class PlacesStore {
   /** ----------------------------------------------------------- */
   @action
   setSelectedPlace(place) {
+    place.visits = [];
     this.selectedPlace = place;
   }
 
@@ -79,7 +80,7 @@ class PlacesStore {
         user: { _id: this.appstore.loggedUser._id }
       })
       .then(
-        action('addresult', response => {
+        action('addresult', () => {
           console.log('add ok');
           callback();
         })
@@ -154,7 +155,7 @@ class PlacesStore {
 
   /** ----------------------------------------------------------- */
   @action
-  loadVisits() {
+  loadVisits(callback, failcallback) {
     services
       .doPost(endpoints.LOAD_VISITS, {
         userId: this.appstore.loggedUser._id,
@@ -162,16 +163,40 @@ class PlacesStore {
       })
       .then(
         action('loadvisitsresult', response => {
-          console.log('visitas cargadas');
-          this.selectedPlace.visits = response;
+          console.log('visitas cargadas:' + response.length);
+          var temp = this.selectedPlace;
+          temp.visits = this.prepareVisits(response);
+          this.selectedPlace = temp;
+
+          if (callback != null) {
+            callback();
+          }
         })
       )
       .catch(
         action('loadvisitsfail', err => {
           console.log('fallo cargando visitas:' + err.message);
-          //TODO
+          if (failcallback != null) {
+            failcallback();
+          }
         })
       );
+  }
+
+  /** ----------------------------------------------------------- */
+  prepareVisits(results) {
+    var salida = [];
+    results.forEach(visit => {
+      salida.push({ title: visit.date, data: visit.dishes });
+    });
+    console.log(JSON.stringify(salida));
+    return salida;
+  }
+
+  /** ----------------------------------------------------------- */
+  @action
+  setNotesToPlace(notes) {
+    this.selectedPlace.notes = notes;
   }
 }
 

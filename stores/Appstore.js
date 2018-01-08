@@ -2,6 +2,7 @@ import { computed, observable, action } from 'mobx';
 
 import LoginStore from './LoginStore.js';
 import PlacesStore from './PlacesStore.js';
+import NotesStore from './NotesStore.js';
 
 class Appstore {
   @observable loggedUser = null;
@@ -123,6 +124,7 @@ class Appstore {
   constructor() {
     this.loginStore = new LoginStore(this);
     this.placesStore = new PlacesStore(this);
+    this.notesStore = new NotesStore(this);
     this.items = this.itemsPorVisitar;
   }
 

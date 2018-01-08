@@ -10,9 +10,13 @@ class MapComponent extends React.Component {
     super(props);
   }
 
+  componentWillMount = () => {
+    console.log('Selected place map: ' + JSON.stringify(appstore.placesStore.selectedPlace));
+  };
+
   render() {
     var place = appstore.placesStore.selectedPlace;
-    var vp = place.viewport;
+    var vp = place.geometry.viewport;
     var latdelta = vp.northeast.lat - vp.southwest.lat;
     var lngdelta = vp.northeast.lng - vp.southwest.lng;
 

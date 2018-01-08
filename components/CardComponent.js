@@ -49,7 +49,7 @@ class CardComponent extends React.Component {
 
   pressCard = () => {
     appstore.placesStore.setSelectedPlace(this.props.item);
-    this.props.navigator.navigate('Detalle');
+    this.props.navigator.navigate('Detalle', { visited: this.props.visited });
   };
 
   render() {

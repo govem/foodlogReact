@@ -12,6 +12,8 @@ import Navigator from './components/Navigator';
 
 import appstore from './stores/Appstore.js';
 
+import moment from 'moment';
+
 @observer
 export default class App extends React.Component {
   constructor(props) {
@@ -19,6 +21,8 @@ export default class App extends React.Component {
     this.state = {
       isReady: false
     };
+
+    moment.locale('es');
   }
 
   async componentWillMount() {
@@ -63,7 +67,7 @@ export default class App extends React.Component {
             >
               <Navigator
                 onNavigationStateChange={(prevState, newState, action) => {
-                  console.log('cambiando navegacion: ' + JSON.stringify(prevState) + ' ' + JSON.stringify(newState));
+                  //console.log('cambiando navegacion: ' + JSON.stringify(prevState) + ' ' + JSON.stringify(newState));
                 }}
               />
             </Drawer>
